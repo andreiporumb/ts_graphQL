@@ -1,0 +1,43 @@
+# Default values for tasks-gql.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+
+  imagePullSecrets:
+  - name: "registrykey"
+
+  db:
+    host: "[DB_HOST]"
+    database: "[DB_NAME]"
+    port: 0 # [DB_PORT] here
+    user: "[DB_USER]"
+    password: "[DB_PASSWORD]"
+
+gql:
+  enabled: true
+  replicaCount: 1
+  name: "ts-test-server"
+  image:
+    repository: "[ORGANIZATION].azurecr.io/"
+    pullPolicy: IfNotPresent
+    name: ts-test-server
+    tag: latest # overwrite from pipeline
+
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 4000
+
+  resources:
+    limits:
+      memory: 512Mi
+
+  # Additional environment variables
+  env:
+    REDIS_DOMAIN_NAME: "[REDIS_DOMAIN_NAME]"
+    REDIS_PORT_NUMBER: "[REDIS_PORT_NUMBER]"
+    IDENTITY_API_URL: "[IDENTITY_API_URI]"
+    IDENTITY_AUTHORITY: "[IDENTITY_AUTHORITY_URL]"
+    KNEX_LOGGING: "true"
+    PORT: "4000"
+    #
